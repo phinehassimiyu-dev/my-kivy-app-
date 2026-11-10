@@ -1,0 +1,23 @@
+name: Build Android APK
+on: [push, workflow_dispatch]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Build with Buildozer
+        uses: ArtemisG/buildozer-action@v3
+        with:
+          buildozer_version: stable
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: ./.buildozer/android/app/build/outputs/apk/debug/*.apk
